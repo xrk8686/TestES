@@ -1,5 +1,6 @@
 package com.kelly.test;
 
+import org.elasticsearch.common.xcontent.XContentHelper;
 import org.elasticsearch.index.query.QueryBuilder;
 import org.elasticsearch.index.query.QueryBuilders;
 import org.elasticsearch.script.Script;
@@ -14,13 +15,18 @@ import java.io.IOException;
  */
 public class ESTest {
     public static void main(String[] args) throws IOException {
+        AggregationBuilder abuilder = AggregationBuilders.filter("by_color").filter(QueryBuilders.scriptQuery(new Script("aaa")));
+        System.out.println(XContentHelper.toString(abuilder));
+    }
+
+    public static void test1() {
         AggregationBuilder abuilder = AggregationBuilders.terms("by_country")
                 .subAggregation(AggregationBuilders.terms("by_date").field("sold"))
                 .script(new Script("doc['color'].value+'_'+doc['price'].value"));
         SearchSourceBuilder searchSourceBuilder = new SearchSourceBuilder();
-        searchSourceBuilder.query(QueryBuilders.termsQuery("color","red","blue","green"));
-        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.termsQuery("color","red","blue","green"))
-                .should(QueryBuilders.termsQuery("color","red","blue","green"));
+        searchSourceBuilder.query(QueryBuilders.termsQuery("color", "red", "blue", "green"));
+        QueryBuilder queryBuilder = QueryBuilders.boolQuery().must(QueryBuilders.termsQuery("color", "red", "blue", "green"))
+                .should(QueryBuilders.termsQuery("color", "red", "blue", "green"));
         searchSourceBuilder.aggregation(abuilder);
         searchSourceBuilder.size(0);
         searchSourceBuilder.query(queryBuilder);

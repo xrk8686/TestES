@@ -15,7 +15,6 @@ import org.elasticsearch.search.builder.SearchSourceBuilder;
 import org.springframework.beans.BeanUtils;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.Bean;
 
@@ -28,7 +27,7 @@ import java.util.List;
  * Created by XU on 2017/4/23.
  */
 
-@SpringBootApplication
+//@SpringBootApplication
 public class Application {
 
     public static void main(String[] args) {
@@ -66,7 +65,7 @@ public class Application {
                     List<TreeNode> subNodes = new ArrayList<>();
                     for (TermsAggregation.Entry subEntry : each.getTermsAggregation("by_date").getBuckets()) {
                         TreeNode subNode = new TreeNode();
-                        BeanUtils.copyProperties(root,subNode);
+                        BeanUtils.copyProperties(root, subNode);
                         subNode.setUpdateDate(new Date(Long.valueOf(subEntry.getKey())));
                         subNode.setCount(subEntry.getCount());
                         subNodes.add(subNode);
