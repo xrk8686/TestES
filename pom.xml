@@ -196,7 +196,12 @@
                             <groupname>xrk8686</groupname>
                             <sources>
                                 <source>
-                                    <location>target/*.jar</location>
+                                    <location>target/</location>
+                                    <includes>
+                                        <include>
+                                            *.jar
+                                        </include>
+                                    </includes>
                                 </source>
                             </sources>
                         </mapping>
