@@ -173,16 +173,16 @@
                     <distribution>Trash 2005</distribution>
                     <group>Application/Collectors</group>
                     <packager>TestES</packager>
-                    <prefix>/usr/local</prefix>
+                    <prefix>/home/xrk8686</prefix>
                     <defineStatements>
                         <defineStatement>_unpackaged_files_terminate_build 0</defineStatement>
                     </defineStatements>
                     <mappings>
                         <mapping>
-                            <directory>/usr/local/bin/landfill</directory>
+                            <directory>/home/xrk8686/TestES/classes</directory>
                             <filemode>440</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
+                            <username>xrk8686</username>
+                            <groupname>xrk8686</groupname>
                             <sources>
                                 <source>
                                     <location>target/classes</location>
@@ -190,64 +190,33 @@
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/usr/local/doc/landfill</directory>
-                            <documentation>true</documentation>
-                            <filemode>444</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
+                            <directory>/home/xrk8686/TestES/lib</directory>
+                            <filemode>750</filemode>
+                            <username>xrk8686</username>
+                            <groupname>xrk8686</groupname>
                             <sources>
                                 <source>
-                                    <location>target/site</location>
+                                    <location>target/*.jar</location>
                                 </source>
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/usr/local/lib</directory>
+                            <directory>/home/xrk8686/TestES/bin</directory>
                             <filemode>750</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
-                            <dependency>
-                                <includes>
-                                    <include>jmock:jmock</include>
-                                    <include>javax.servlet:servlet-api:2.4</include>
-                                </includes>
-                                <excludes>
-                                    <exclude>junit:junit</exclude>
-                                </excludes>
-                            </dependency>
-                        </mapping>
-                        <mapping>
-                            <directory>/usr/local/bin</directory>
-                            <filemode>750</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
+                            <username>xrk8686</username>
+                            <groupname>xrk8686</groupname>
                             <sources>
                                 <source>
                                     <location>src/main/bin</location>
                                 </source>
-                                <softlinkSource>
-                                    <location>/usr/local/bin/new.sh</location>
-                                    <destination>old.sh</destination>
-                                </softlinkSource>
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/usr/local/oldbin</directory>
-                            <filemode>750</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
-                            <sources>
-                                <softlinkSource>
-                                    <location>/usr/local/bin</location>
-                                </softlinkSource>
-                            </sources>
-                        </mapping>
-                        <mapping>
-                            <directory>/usr/local/conf/landfill</directory>
+                            <directory>/home/xrk8686/TestES/conf</directory>
                             <configuration>true</configuration>
                             <filemode>640</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
+                            <username>xrk8686</username>
+                            <groupname>xrk8686</groupname>
                             <sources>
                                 <source>
                                     <location>src/main/conf</location>
@@ -255,10 +224,10 @@
                             </sources>
                         </mapping>
                         <mapping>
-                            <directory>/usr/local/log/landfill</directory>
-                            <filemode>750</filemode>
-                            <username>dumper</username>
-                            <groupname>dumpgroup</groupname>
+                            <directory>/home/xrk8686/TestES/log</directory>
+                            <filemode>755</filemode>
+                            <username>xrk8686</username>
+                            <groupname>xrk8686</groupname>
                         </mapping>
                     </mappings>
                     <preinstallScriptlet>
