@@ -1,0 +1,109 @@
+//PUT _ingest/pipeline/test-fielbeat-elasticsearch
+{
+  "description" : "test-fielbeat-elasticsearch",
+  "processors" : [
+    {
+    	"grok": {
+      	"field": "message",
+        "patterns":["\\[%{ES_DATESTAMP:log_timestamp}\\]\\[%{MY_LOGLEVEL:logLevel}\\]\\[%{MY_JAVACLASS:javaclass}\\] %{JAVALOGMESSAGE:logmessage}"],
+      	"pattern_definitions": {
+        	"ES_DATESTAMP" : "20%{YEAR}-%{MONTHNUM}-%{MONTHDAY}T%{HOUR}:?%{MINUTE}(?::?%{SECOND})",
+        	"MY_LOGLEVEL" : "([Aa]lert|ALERT|[Tt]race|TRACE|[Dd]ebug|DEBUG|[Nn]otice|NOTICE|[Ii]nfo|INFO|[Ww]arn?(?:ing)?|WARN?(?:ING)?|[Ee]rr?(?:or)?|ERR?(?:OR)?|[Cc]rit?(?:ical)?|CRIT?(?:ICAL)?|[Ff]atal|FATAL|[Ss]evere|SEVERE|EMERG(?:ENCY)?|[Ee]merg(?:ency)?)[[:space:]]*",
+        	"MY_JAVACLASS" : "(?:[a-zA-Z0-9-]+\\.)+[A-Za-z0-9$]+[[:space:]]*"
+      	}
+    	}
+    }
+  ]
+}
+
+//POST _ingest/pipeline/_simulate
+{
+  "pipeline" :
+  {
+	  "description" : "test-fielbeat-elasticsearch",
+	  "processors" : [
+	    {
+	    	"grok": {
+	      	"field": "message",
+	        "patterns":["\\[%{ES_DATESTAMP:log_timestamp}\\]\\[%{MY_LOGLEVEL:logLevel}\\]\\[%{MY_JAVACLASS:javaclass}\\] - %{JAVALOGMESSAGE:logmessage}"],
+	      	"pattern_definitions": {
+	        	"ES_DATESTAMP" : "20%{YEAR}-%{MONTHNUM}-%{MONTHDAY}T%{HOUR}:?%{MINUTE}(?::?%{SECOND})",
+	        	"MY_LOGLEVEL" : "([Aa]lert|ALERT|[Tt]race|TRACE|[Dd]ebug|DEBUG|[Nn]otice|NOTICE|[Ii]nfo|INFO|[Ww]arn?(?:ing)?|WARN?(?:ING)?|[Ee]rr?(?:or)?|ERR?(?:OR)?|[Cc]rit?(?:ical)?|CRIT?(?:ICAL)?|[Ff]atal|FATAL|[Ss]evere|SEVERE|EMERG(?:ENCY)?|[Ee]merg(?:ency)?){1}[[:space:]]*",
+	        	"MY_JAVACLASS" : "(?:[a-zA-Z0-9-]+\\.)+[A-Za-z0-9$]+[[:space:]]*"
+	      	}
+	    	}
+	    },
+	    {
+	    	"kv": {
+	        "field": "logmessage",
+	        "field_split": ", ",
+	        "value_split": "=",
+			"ignore_missing": true
+	    	}
+	    },
+		{
+			"date": {
+				"field": "log_timestamp",
+				"target_field" : "timestamp",
+				"formats" : ["ISO8601"],
+				"timezone" : "EST"
+	    	}
+		},
+		{
+			"date_index_name": {
+				"field": "@timestamp",
+				"index_name_prefix": "filebeat-6.1.1-",
+				"index_name_format": "yyyy.MM.dd",
+				"date_rounding" : "d",
+				"date_formats" : ["ISO8601"],
+				"timezone" : "EST"
+	    	}
+		},
+		{
+			"convert": {
+				"field" : "duration",
+				"type": "float",
+				"ignore_missing": true
+			}
+		},
+		{
+			"trim": {
+				"field" : "ip",
+				"ignore_missing": true
+			}
+		}
+	  ]
+  },
+  "docs": [
+		{
+		  "_index": "filebeat-6.1.1-2018.01.17",
+		  "_type": "doc",
+		  "_id": "csCdBGEBsJ-zMVI9VJYr",
+		  "_version": 1,
+		  "_score": null,
+		  "_source": {
+		    "@timestamp": "2018-01-17T14:54:25.500Z",
+		    "source": "f:\\eclipse-jee\\elasticsearch\\elasticsearch-6.1.1\\logs\\elasticsearch.log",
+		    "offset": 21132583,
+		    "message": "[2018-01-17T22:54:25,327][INFO ][o.e.c.m.MetaDataMappingService] - user=ipb, duration=1.23, ip=1.2.3.4 ",
+		    "prospector": {
+		      "type": "log"
+		    },
+		    "app_id": "elasticsearch",
+		    "beat": {
+		      "name": "XU-PC",
+		      "hostname": "XU-PC",
+		      "version": "6.1.1"
+		    }
+		  },
+		  "fields": {
+		    "@timestamp": [
+		      "2018-01-17T14:54:25.500Z"
+		    ]
+		  },
+		  "sort": [
+		    1516200865500
+		  ]
+		}
+  ]
+}
