@@ -78,6 +78,14 @@
           "ignore_missing": true
         }
       }
+    ],
+    "on_failure": [
+      {
+        "set": {
+          "field": "_index",
+          "value": "failed-{{ _index }}"
+        }
+      }
     ]
   },
   "docs": [
